@@ -8,6 +8,11 @@ Vue.config.productionTip = false
 import VueCompositionApi from '@vue/composition-api'
 Vue.use(VueCompositionApi)
 
+import VueSvgSprite from 'vue-svg-sprite'
+Vue.use(VueSvgSprite, {
+  url: require('@/assets/sprite.svg'),
+})
+
 new Vue({
   router,
   store,

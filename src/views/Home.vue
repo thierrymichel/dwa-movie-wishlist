@@ -1,24 +1,24 @@
 <template>
   <main class="home">
     <h1>Movie wishlist</h1>
-    <Listing :items="movies.results" />
+    <Listing :items="movies" />
   </main>
 </template>
 
 <script>
 import { defineComponent } from '@vue/composition-api'
 
+import { mapGetters } from '@/store/utils'
 import Listing from '@/components/Listing.vue'
-import movies from '@/inc/movies.json'
 
 export default defineComponent({
   name: 'Home',
   components: {
     Listing,
   },
-  setup() {
+  setup(props, ctx) {
     return {
-      movies,
+      ...mapGetters(ctx, ['movies']),
     }
   },
 })

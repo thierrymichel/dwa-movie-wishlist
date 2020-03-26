@@ -1,13 +1,22 @@
 <template>
   <ul class="listing">
-    <li class="item" v-for="item in items" :key="item.id">
+    <li
+      class="item"
+      v-for="item in items"
+      :key="item.id"
+      @click="toggleLike(item)"
+    >
       <h2 class="item__title">{{ item.title }}</h2>
       <img
         class="item__poster"
         :src="`https://image.tmdb.org/t/p/w500${item.poster_path}`"
         :alt="item.title"
       />
-      <button type="button" class="item__like like">
+      <button
+        type="button"
+        class="item__like like"
+        :class="{ liked: item.liked }"
+      >
         <Icon :icon="{ symbol: 'heart', size: '0 0 24 24' }" />
       </button>
     </li>
@@ -16,6 +25,7 @@
 
 <script>
 import { defineComponent } from '@vue/composition-api'
+import { mapMutations } from '@/store/utils'
 import Icon from '@/components/Icon.vue'
 
 export default defineComponent({
@@ -28,6 +38,11 @@ export default defineComponent({
       type: Array,
       default: () => [],
     },
+  },
+  setup(props, ctx) {
+    return {
+      ...mapMutations(ctx, { toggleLike: 'TOGGLE_LIKE' }),
+    }
   },
 })
 </script>
@@ -109,11 +124,11 @@ export default defineComponent({
   &:focus {
     outline: 0;
     opacity: 1;
+    fill: $c-gold;
   }
 
-  &.is-selected {
+  &.liked {
     opacity: 1;
-    // fill: $c-gold;
     fill: $c-pink;
   }
 

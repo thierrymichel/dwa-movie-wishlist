@@ -10,6 +10,7 @@ const state = {
 
 const getters = {
   movies: state => state.data,
+  moviesLiked: state => state.data.filter(movie => movie.liked),
 }
 
 const mutations = {

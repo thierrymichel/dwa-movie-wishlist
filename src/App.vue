@@ -1,10 +1,33 @@
 <template>
   <div id="app" class="site">
     <ChromeNav class="site__nav" />
-    <router-view class="site__main" />
+    <transition name="fade" mode="out-in">
+      <router-view class="site__main" />
+    </transition>
     <ChromeFooter class="site__footer" />
   </div>
 </template>
+
+<style lang="scss">
+@import '@/styles/utils';
+@import '@/styles/global';
+.site__main {
+  will-change: opacity, transform;
+}
+
+.fade-enter-active {
+  transition: all 0.8s ease-in-out;
+}
+.fade-leave-active {
+  transition: all 0.5s ease-in-out;
+}
+.fade-enter {
+  opacity: 0;
+}
+.fade-leave-to {
+  opacity: 1;
+}
+</style>
 
 <script>
 import ChromeFooter from '@/components/chrome/Footer.vue'
@@ -18,8 +41,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss">
-@import '@/styles/utils';
-@import '@/styles/global';
-</style>

@@ -25,11 +25,10 @@ export default defineComponent({
   props: {
     icon: {
       type: Object,
-      default: () => {},
+      default: () => ({
+        size: '0 0 24 24',
+      }),
     },
-  },
-  setup() {
-    return {}
   },
 })
 </script>

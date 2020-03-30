@@ -17,7 +17,7 @@
         class="item__like like"
         :class="{ liked: item.liked }"
       >
-        <Icon :icon="{ symbol: 'heart', size: '0 0 24 24' }" />
+        <Icon :icon="{ symbol: 'heart' }" />
       </button>
     </li>
   </ul>

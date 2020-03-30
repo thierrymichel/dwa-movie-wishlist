@@ -22,8 +22,4 @@ export default {
 <style lang="scss">
 @import '@/styles/utils';
 @import '@/styles/global';
-
-body > svg {
-  display: none;
-}
 </style>

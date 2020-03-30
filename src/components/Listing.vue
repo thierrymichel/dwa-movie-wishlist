@@ -1,5 +1,5 @@
 <template>
-  <ul class="listing">
+  <ul :class="`listing--${view}`">
     <li
       class="item"
       v-for="item in items"
@@ -11,6 +11,7 @@
         class="item__poster"
         :src="`https://image.tmdb.org/t/p/w500${item.poster_path}`"
         :alt="item.title"
+        v-if="view === 'grid'"
       />
       <button
         type="button"
@@ -23,35 +24,10 @@
   </ul>
 </template>
 
-<script>
-import { defineComponent } from '@vue/composition-api'
-import { mapMutations } from '@/store/utils'
-import Icon from '@/components/Icon.vue'
-
-export default defineComponent({
-  name: 'Listing',
-  components: {
-    Icon,
-  },
-  props: {
-    items: {
-      type: Array,
-      default: () => [],
-    },
-  },
-  setup(props, ctx) {
-    return {
-      ...mapMutations(ctx, { toggleLike: 'TOGGLE_LIKE' }),
-    }
-  },
-})
-</script>
-
 <style lang="scss" scoped>
 @import '@/styles/utils';
 
-.listing,
-[class*='listing--'] {
+[class*='listing--'][class*='--grid'] {
   display: grid;
   grid-template-columns: 1fr;
   grid-gap: 2rem;
@@ -76,19 +52,31 @@ export default defineComponent({
   display: flex;
   flex-direction: column-reverse;
   overflow: hidden;
+
+  [class*='listing--'][class*='--list'] > & {
+    border-bottom: 1px solid $c-dark;
+  }
 }
 
 .item__title {
   position: relative;
   z-index: 1;
   padding: 1rem 1.5rem;
-  background-image: linear-gradient(to top, $c-black 0%, rgba($c-black, 0.35));
+
   font-size: 2rem;
   line-height: 1.1;
   will-change: transform;
 
   > * {
     will-change: transform, opacity;
+  }
+
+  [class*='listing--'][class*='--grid'] > & {
+    background-image: linear-gradient(
+      to top,
+      $c-black 0%,
+      rgba($c-black, 0.35)
+    );
   }
 }
 
@@ -136,6 +124,38 @@ export default defineComponent({
     display: block;
     width: 2.4rem;
     height: 2.4rem;
+
+    [class*='listing--'][class*='--list'] & {
+      transform: scale(0.6);
+    }
   }
 }
 </style>
+
+<script>
+import { defineComponent } from '@vue/composition-api'
+import { mapMutations } from '@/store/utils'
+import Icon from '@/components/Icon.vue'
+
+export default defineComponent({
+  name: 'Listing',
+  components: {
+    Icon,
+  },
+  props: {
+    items: {
+      type: Array,
+      default: () => [],
+    },
+    view: {
+      type: String,
+      default: 'grid',
+    },
+  },
+  setup(props, ctx) {
+    return {
+      ...mapMutations(ctx, { toggleLike: 'TOGGLE_LIKE' }),
+    }
+  },
+})
+</script>

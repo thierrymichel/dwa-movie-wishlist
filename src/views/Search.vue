@@ -44,8 +44,11 @@ export default defineComponent({
     Listing,
   },
   setup(props, ctx) {
+    // Create ref for v-model -> input value auto binded
     const search = ref('')
+    // Get movies list
     const { movies } = mapGetters(ctx, ['movies'])
+    // Filtered list based on search value
     const results = computed(() =>
       movies.value.filter(movie =>
         movie.title.toLowerCase().includes(search.value.toLowerCase())

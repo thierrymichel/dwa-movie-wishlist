@@ -6,7 +6,9 @@
 </template>
 
 <script>
-import { defineComponent, computed } from '@vue/composition-api'
+// More verbose option with a computed value rather than getter
+// import { defineComponent, computed } from '@vue/composition-api'
+import { defineComponent } from '@vue/composition-api'
 
 import { mapGetters } from '@/store/utils'
 import Listing from '@/components/Listing.vue'
@@ -18,14 +20,12 @@ export default defineComponent({
   },
   setup(props, ctx) {
     // Via une computed
-    const { movies } = mapGetters(ctx, ['movies'])
-    const likes = computed(() => movies.value.filter(movie => movie.liked))
+    // const { movies } = mapGetters(ctx, ['movies'])
+    // const likes = computed(() => movies.value.filter(movie => movie.liked))
 
     return {
-      likes,
-      // Ou via un getter au niveau du store
-      // si on a besoin des likes ailleurs…
-      // ...mapGetters(ctx, { likes: 'moviesLiked' }),
+      // likes,
+      ...mapGetters(ctx, { likes: 'moviesLiked' }),
     }
   },
 })

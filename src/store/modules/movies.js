@@ -1,11 +1,17 @@
 import data from '@/inc/movies.json'
 
-const state = {
-  data: data.results.map(m => {
-    m.liked = false
+const myMovies = JSON.parse(window.localStorage.getItem('movies'))
+const saveMyMovies = data =>
+  window.localStorage.setItem('movies', JSON.stringify(data))
 
-    return m
-  }),
+const state = {
+  data:
+    myMovies ||
+    data.results.map(m => {
+      m.liked = false
+
+      return m
+    }),
 }
 
 const getters = {
@@ -21,6 +27,7 @@ const mutations = {
   },
   TOGGLE_LIKE(state, item) {
     item.liked = !item.liked
+    saveMyMovies(state.data)
   },
 }
 

@@ -141,7 +141,7 @@
 
 <script>
 import { defineComponent } from '@vue/composition-api'
-import Velocity from 'velocity-animate'
+import gsap from 'gsap'
 
 import { mapMutations } from '@/store/utils'
 import Icon from '@/components/Icon.vue'
@@ -166,19 +166,29 @@ export default defineComponent({
       el.style.opacity = 0
       el.style.height = 0
     }
-    const enter = (el, done) => {
+    const enter = async (el, done) => {
       const delay = el.dataset.index * 150
 
-      setTimeout(function () {
-        Velocity(el, { opacity: 1, height: '43px' }, { complete: done })
-      }, delay)
+      await gsap.to(el, {
+        opacity: 1,
+        height: '43px',
+        duration: 1,
+        delay,
+      })
+
+      done()
     }
-    const leave = (el, done) => {
+    const leave = async (el, done) => {
       const delay = el.dataset.index * 150
 
-      setTimeout(function () {
-        Velocity(el, { opacity: 0, height: 0 }, { complete: done })
-      }, delay)
+      await gsap.to(el, {
+        opacity: 0,
+        height: 0,
+        duration: 1,
+        delay,
+      })
+
+      done()
     }
 
     return {

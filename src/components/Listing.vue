@@ -1,5 +1,12 @@
 <template>
-  <ul :class="`listing--${view}`">
+  <transition-group
+    name="staggered-fade"
+    tag="ul"
+    :class="`listing--${view}`"
+    @before-enter="beforeEnter"
+    @enter="enter"
+    @leave="leave"
+  >
     <li
       class="item"
       v-for="item in items"
@@ -21,7 +28,7 @@
         <Icon :icon="{ symbol: 'heart' }" />
       </button>
     </li>
-  </ul>
+  </transition-group>
 </template>
 
 <style lang="scss" scoped>
@@ -134,6 +141,8 @@
 
 <script>
 import { defineComponent } from '@vue/composition-api'
+import Velocity from 'velocity-animate'
+
 import { mapMutations } from '@/store/utils'
 import Icon from '@/components/Icon.vue'
 
@@ -153,8 +162,30 @@ export default defineComponent({
     },
   },
   setup(props, ctx) {
+    const beforeEnter = el => {
+      el.style.opacity = 0
+      el.style.height = 0
+    }
+    const enter = (el, done) => {
+      const delay = el.dataset.index * 150
+
+      setTimeout(function () {
+        Velocity(el, { opacity: 1, height: '43px' }, { complete: done })
+      }, delay)
+    }
+    const leave = (el, done) => {
+      const delay = el.dataset.index * 150
+
+      setTimeout(function () {
+        Velocity(el, { opacity: 0, height: 0 }, { complete: done })
+      }, delay)
+    }
+
     return {
       ...mapMutations(ctx, { toggleLike: 'TOGGLE_LIKE' }),
+      beforeEnter,
+      enter,
+      leave,
     }
   },
 })

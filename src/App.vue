@@ -5,6 +5,7 @@
       <router-view class="site__main" />
     </transition>
     <ChromeFooter class="site__footer" />
+    <Popup />
   </div>
 </template>
 
@@ -30,14 +31,17 @@
 </style>
 
 <script>
+import { defineComponent } from '@vue/composition-api'
 import ChromeFooter from '@/components/chrome/Footer.vue'
 import ChromeNav from '@/components/chrome/Nav.vue'
+import Popup from '@/components/Popup.vue'
 
-export default {
+export default defineComponent({
   name: 'App',
   components: {
     ChromeFooter,
     ChromeNav,
+    Popup,
   },
-}
+})
 </script>

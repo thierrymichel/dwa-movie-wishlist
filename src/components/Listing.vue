@@ -7,23 +7,20 @@
     @enter="enter"
     @leave="leave"
   >
-    <li
-      class="item"
-      v-for="item in items"
-      :key="item.id"
-      @click="toggleLike(item)"
-    >
-      <h2 class="item__title">{{ item.title }}</h2>
+    <li class="item" v-for="item in items" :key="item.id">
+      <h2 class="item__title" @click="toggleLike(item)">{{ item.title }}</h2>
       <img
         class="item__poster"
         :src="`https://image.tmdb.org/t/p/w500${item.poster_path}`"
         :alt="item.title"
         v-if="view === 'grid'"
+        @click.stop="show(item)"
       />
       <button
         type="button"
         class="item__like like"
         :class="{ liked: item.liked }"
+        @click="toggleLike(item)"
       >
         <Icon :icon="{ symbol: 'heart' }" />
       </button>
@@ -78,7 +75,7 @@
     will-change: transform, opacity;
   }
 
-  [class*='listing--'][class*='--grid'] > & {
+  [class*='listing--'][class*='--grid'] & {
     background-image: linear-gradient(
       to top,
       $c-black 0%,
@@ -166,8 +163,9 @@ export default defineComponent({
       el.style.opacity = 0
       el.style.height = 0
     }
+    // Async/await mode
     const enter = async (el, done) => {
-      const delay = el.dataset.index * 150
+      const delay = (el.dataset.index * 50) / 1000
 
       await gsap.to(el, {
         opacity: 1,
@@ -178,8 +176,34 @@ export default defineComponent({
 
       done()
     }
+
+    // Promise mode
+    // const enter = (el, done) => {
+    //   const delay = el.dataset.index * 150
+    //   gsap
+    //     .to(el, {
+    //       opacity: 1,
+    //       height: '43px',
+    //       duration: 1,
+    //       delay,
+    //     })
+    //     .then(done)
+    // }
+
+    // Callback (aka old school) mode
+    // const enter = (el, done) => {
+    //   const delay = el.dataset.index * 150
+    //   gsap.to(el, {
+    //     opacity: 1,
+    //     height: '43px',
+    //     duration: 1,
+    //     delay,
+    //     onComplete: done,
+    //   })
+    // }
+
     const leave = async (el, done) => {
-      const delay = el.dataset.index * 150
+      const delay = (el.dataset.index * 50) / 1000
 
       await gsap.to(el, {
         opacity: 0,
@@ -190,12 +214,25 @@ export default defineComponent({
 
       done()
     }
+    const show = item => {
+      // Vue2 this.$emit('custom-event', item, item.title)
+      // this.$busEvent.$emit
+      // ctx.root.$ee.$emit('custom-event', item, item.title)
+      const { title, id } = item
+      ctx.root.$emit('popup-open', 'movie', { title, message: id })
+    }
+
+    // Vue2 this.$on('custom-event', cb)
+    // ctx.root.$on('custom-event', item => {
+    //   console.info('ON', item.title)
+    // })
 
     return {
       ...mapMutations(ctx, { toggleLike: 'TOGGLE_LIKE' }),
       beforeEnter,
       enter,
       leave,
+      show,
     }
   },
 })

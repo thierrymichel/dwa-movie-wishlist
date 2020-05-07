@@ -5,6 +5,17 @@ import store from './store'
 
 Vue.config.productionTip = false
 
+// v2: Event Emitter
+// const ee = new Vue()
+
+// Object.defineProperties(Vue.prototype, {
+//   $ee: {
+//     get() {
+//       return ee
+//     },
+//   },
+// })
+
 import VueCompositionApi from '@vue/composition-api'
 Vue.use(VueCompositionApi)
 

@@ -32,6 +32,8 @@
 
 <script>
 import { defineComponent } from '@vue/composition-api'
+import { mapMutations } from '@/store/utils'
+
 import ChromeFooter from '@/components/chrome/Footer.vue'
 import ChromeNav from '@/components/chrome/Nav.vue'
 import Popup from '@/components/Popup.vue'
@@ -42,6 +44,13 @@ export default defineComponent({
     ChromeFooter,
     ChromeNav,
     Popup,
+  },
+  setup(props, ctx) {
+    // Get likes from storage and update store
+    const { setLikes } = mapMutations(ctx, { setLikes: 'SET_LIKES' })
+    const savedLikes = ctx.root.$storage.getItem('likes')
+
+    savedLikes && setLikes(JSON.parse(savedLikes))
   },
 })
 </script>

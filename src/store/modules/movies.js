@@ -1,17 +1,11 @@
 import data from '@/inc/movies.json'
 
-const myMovies = JSON.parse(window.localStorage.getItem('movies'))
-const saveMyMovies = data =>
-  window.localStorage.setItem('movies', JSON.stringify(data))
-
 const state = {
-  data:
-    myMovies ||
-    data.results.map(m => {
-      m.liked = false
+  data: data.results.map(m => {
+    m.liked = false
 
-      return m
-    }),
+    return m
+  }),
 }
 
 const getters = {
@@ -20,14 +14,25 @@ const getters = {
 }
 
 const mutations = {
-  SET_MOVIES(state, payload) {
-    if (payload) {
-      state.data = payload
+  SET_MOVIES(state, movies) {
+    if (movies) {
+      state.data = movies
     }
   },
-  TOGGLE_LIKE(state, item) {
+  SET_LIKES(state, liked) {
+    if (liked) {
+      const ids = liked.map(m => m.id)
+
+      state.data.forEach(m => {
+        if (ids.includes(m.id)) {
+          m.liked = true
+        }
+      })
+    }
+  },
+  TOGGLE_LIKE(state, { item, vm }) {
     item.liked = !item.liked
-    saveMyMovies(state.data)
+    vm.$storage.setItem('likes', JSON.stringify(getters.moviesLiked(state)))
   },
 }
 

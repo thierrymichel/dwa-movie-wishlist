@@ -24,6 +24,9 @@ Vue.use(VueSvgSprite, {
   url: require('@/assets/sprite.svg'),
 })
 
+import VueStorage, { STORAGE } from './plugins/storage'
+Vue.use(VueStorage, STORAGE.LOCAL)
+
 new Vue({
   router,
   store,

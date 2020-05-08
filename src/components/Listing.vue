@@ -8,7 +8,7 @@
     @leave="leave"
   >
     <li class="item" v-for="item in items" :key="item.id">
-      <h2 class="item__title" @click="toggleLike(item)">{{ item.title }}</h2>
+      <h2 class="item__title" @click="toggle(item)">{{ item.title }}</h2>
       <img
         class="item__poster"
         :src="`https://image.tmdb.org/t/p/w500${item.poster_path}`"
@@ -20,7 +20,7 @@
         type="button"
         class="item__like like"
         :class="{ liked: item.liked }"
-        @click="toggleLike(item)"
+        @click="toggle(item)"
       >
         <Icon :icon="{ symbol: 'heart' }" />
       </button>
@@ -227,8 +227,13 @@ export default defineComponent({
     //   console.info('ON', item.title)
     // })
 
+    // Get and rename the mutation
+    const { toggleLike } = mapMutations(ctx, { toggleLike: 'TOGGLE_LIKE' })
+    // Enhance payload with context
+    const toggle = item => toggleLike({ item, vm: ctx.root })
+
     return {
-      ...mapMutations(ctx, { toggleLike: 'TOGGLE_LIKE' }),
+      toggle,
       beforeEnter,
       enter,
       leave,

@@ -10,12 +10,28 @@
     <li class="item" v-for="item in items" :key="item.id">
       <h2 class="item__title" @click="toggle(item)">{{ item.title }}</h2>
       <img
-        class="item__poster"
         :src="`https://image.tmdb.org/t/p/w500${item.poster_path}`"
+        class="item__poster"
         :alt="item.title"
         v-if="view === 'grid'"
         @click.stop="show(item)"
       />
+      <!-- Lazy loading -->
+      <!-- <img
+        v-lazy="`https://image.tmdb.org/t/p/w500${item.poster_path}`"
+        class="item__poster"
+        :alt="item.title"
+        v-if="view === 'grid'"
+        @click.stop="show(item)"
+      /> -->
+      <!-- <v-lazy-image
+        class="item__poster"
+        :src="`https://image.tmdb.org/t/p/w500${item.poster_path}`"
+        src-placeholder="http://lorempixel.com/400/200/""
+        :alt="item.title"
+        v-if="view === 'grid'"
+        @click.stop="show(item)"
+      /> -->
       <button
         type="button"
         class="item__like like"

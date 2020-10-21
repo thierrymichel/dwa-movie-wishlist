@@ -23,8 +23,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import '@/styles/utils';
-
 .nav__item {
   border-bottom: 1px solid $c-darker;
 }

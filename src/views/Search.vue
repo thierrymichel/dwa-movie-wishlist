@@ -1,20 +1,10 @@
 <template>
   <main class="search">
     <h1 class="search__title">Search</h1>
-    <input
-      type="text"
-      name="search"
-      id="search"
-      class="search__input"
-      v-model="search"
-    />
-    <Listing :items="results" view="list" />
   </main>
 </template>
 
 <style lang="scss" scoped>
-@import '@/styles/utils';
-
 .search__title {
   margin-bottom: 2rem;
 }
@@ -33,32 +23,9 @@
 </style>
 
 <script>
-import { defineComponent, computed, ref } from '@vue/composition-api'
-
-import { mapGetters } from '@/store/utils'
-import Listing from '@/components/Listing.vue'
+import { defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'Search',
-  components: {
-    Listing,
-  },
-  setup(props, ctx) {
-    // Create ref for v-model -> input value auto binded
-    const search = ref('')
-    // Get movies list
-    const { movies } = mapGetters(ctx, ['movies'])
-    // Filtered list based on search value
-    const results = computed(() =>
-      movies.value.filter(movie =>
-        movie.title.toLowerCase().includes(search.value.toLowerCase())
-      )
-    )
-
-    return {
-      search,
-      results,
-    }
-  },
 })
 </script>

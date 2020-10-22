@@ -1,6 +1,11 @@
 <template>
   <ul :class="`listing--${view}`">
-    <li class="item" v-for="item in items" :key="item.id">
+    <li
+      class="item"
+      v-for="item in items"
+      :key="item.id"
+      @click="toggleLike(item)"
+    >
       <h2 class="item__title">{{ item.title }}</h2>
       <img
         :src="`https://image.tmdb.org/t/p/w500${item.poster_path}`"
@@ -8,11 +13,6 @@
         :alt="item.title"
         v-if="view === 'grid'"
       />
-      <button
-        type="button"
-        class="item__like like"
-        :class="{ liked: item.liked }"
-      ></button>
     </li>
   </ul>
 </template>
@@ -125,18 +125,31 @@
 
 <script>
 import { defineComponent } from 'vue'
+// Import toggle function
+import { toggleLike } from '@/composables/movies'
 
 export default defineComponent({
   name: 'Listing',
+  // Props
+  // Allow parent to share data with child component.
+  // Intended to be a `one-way` binding (from parent to child)
   props: {
+    // Detailed prop declaration helps to understand
+    // what's expected and how to use it.
     items: {
       type: Array,
-      default: () => [],
+      required: true,
     },
     view: {
       type: String,
       default: 'grid',
     },
+  },
+  setup() {
+    return {
+      // Expose imported toggle function to the template
+      toggleLike,
+    }
   },
 })
 </script>

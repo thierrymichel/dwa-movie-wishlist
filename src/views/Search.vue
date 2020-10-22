@@ -1,6 +1,8 @@
 <template>
   <main class="search">
-    <h1 class="search__title">Search</h1>
+    <h1>Search</h1>
+    <!-- Display all movies in a list view -->
+    <Listing :items="movies" view="list" />
   </main>
 </template>
 
@@ -25,7 +27,21 @@
 <script>
 import { defineComponent } from 'vue'
 
+import Listing from '@/components/Listing.vue'
+// Import movies data
+import { movies } from '@/composables/movies'
+
 export default defineComponent({
   name: 'Search',
+  // Do not forget to register child components
+  components: {
+    Listing,
+  },
+  setup() {
+    return {
+      // Expose imported movies data to the template
+      movies,
+    }
+  },
 })
 </script>

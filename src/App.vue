@@ -1,7 +1,10 @@
 <template>
   <div class="site">
     <ChromeNav class="site__nav" />
-    <router-view class="site__main" />
+    <!-- Probably better tu use a true loader… -->
+    <pre v-if="isLoading">Is loading ? {{ isLoading }}</pre>
+    <!-- Movies are available… -->
+    <router-view v-else class="site__main" />
     <ChromeFooter class="site__footer" />
   </div>
 </template>
@@ -36,10 +39,13 @@
 </style>
 
 <script>
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 
 import ChromeFooter from '@/components/chrome/Footer.vue'
 import ChromeNav from '@/components/chrome/Nav.vue'
+
+// Import asynchromous function to fetch movies data
+import { loadMovies } from '@/composables/movies'
 
 export default defineComponent({
   name: 'App',
@@ -49,6 +55,18 @@ export default defineComponent({
   },
   setup() {
     console.log('App')
+    // Track loading status
+    const isLoading = ref(true)
+
+    // `loadMovies` returns a promise.
+    // When it resolves / is fulfilled, status is updated.
+    loadMovies().then(() => {
+      isLoading.value = false
+    })
+
+    return {
+      isLoading,
+    }
   },
 })
 </script>
